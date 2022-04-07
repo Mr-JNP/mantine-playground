@@ -1,6 +1,18 @@
 import { useState } from "react";
 import type { NextPage } from "next";
-import { Box, Button, Group, Modal, Stack, TextInput } from "@mantine/core";
+import {
+  AppShell,
+  Box,
+  Burger,
+  Button,
+  Group,
+  Header,
+  Image,
+  MediaQuery,
+  TextInput,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Radar } from "react-chartjs-2";
 import {
@@ -64,6 +76,7 @@ const options = {
 };
 
 const Home: NextPage = () => {
+  const theme = useMantineTheme();
   const [formValues, setFormValues] = useState<number[]>([]);
   const [opened, setOpened] = useState(false);
   const form = useForm({
@@ -78,70 +91,92 @@ const Home: NextPage = () => {
   });
 
   return (
-    <Stack>
-      <Group grow position='center' my='100px'>
-        <Box sx={{ maxWidth: 640 }} mx='auto'>
-          <Radar data={setChartData(formValues)} options={options} />
-        </Box>
+    <AppShell
+      padding='md'
+      header={
+        <Header height={80} p='md'>
+          <div
+            style={{ display: "flex", alignItems: "center", height: "100%" }}>
+            <Image width={80} height={80} src='nesdc-logo.png' />
+            <Text weight={700}>
+              Office of the National Economic and Social Development Council
+            </Text>
+            <MediaQuery largerThan='sm' styles={{ display: "none" }}>
+              <Burger
+                opened={opened}
+                onClick={() => setOpened((o) => !o)}
+                size='sm'
+                color={theme.colors.gray[6]}
+                mr='xl'
+              />
+            </MediaQuery>
+          </div>
+        </Header>
+      }
+      styles={(theme) => ({
+        main: {
+          backgroundColor:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
+        },
+      })}>
+      <Group grow>
+        <Group grow position='center' my='100px'>
+          <Box sx={{ maxWidth: 360 }} mx='auto'>
+            <form
+              onSubmit={form.onSubmit((values) => {
+                setFormValues(Object.values(values));
+              })}>
+              <TextInput
+                required
+                label='A'
+                placeholder='0'
+                {...form.getInputProps("a")}
+              />
+              <TextInput
+                required
+                label='B'
+                placeholder='0'
+                {...form.getInputProps("b")}
+              />
+              <TextInput
+                required
+                label='C'
+                placeholder='0'
+                {...form.getInputProps("c")}
+              />
+              <TextInput
+                required
+                label='D'
+                placeholder='0'
+                {...form.getInputProps("d")}
+              />
+              <TextInput
+                required
+                label='E'
+                placeholder='0'
+                {...form.getInputProps("e")}
+              />
+              <TextInput
+                required
+                label='F'
+                placeholder='0'
+                {...form.getInputProps("f")}
+              />
+              <Group position='center' mt='md'>
+                <Button type='submit'>Submit</Button>
+              </Group>
+            </form>
+          </Box>
+        </Group>
+        <Group grow position='center' my='100px'>
+          <Box sx={{ maxWidth: 640 }} mx='auto'>
+            <Radar data={setChartData(formValues)} options={options} />
+          </Box>
+        </Group>
       </Group>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title='Input your data'>
-        <Box sx={{ maxWidth: 360 }} mx='auto'>
-          <form
-            onSubmit={form.onSubmit((values) => {
-              setFormValues(Object.values(values));
-              if (opened) {
-                setOpened(false);
-              }
-            })}>
-            <TextInput
-              required
-              label='A'
-              placeholder='0'
-              {...form.getInputProps("a")}
-            />
-            <TextInput
-              required
-              label='B'
-              placeholder='0'
-              {...form.getInputProps("b")}
-            />
-            <TextInput
-              required
-              label='C'
-              placeholder='0'
-              {...form.getInputProps("c")}
-            />
-            <TextInput
-              required
-              label='D'
-              placeholder='0'
-              {...form.getInputProps("d")}
-            />
-            <TextInput
-              required
-              label='E'
-              placeholder='0'
-              {...form.getInputProps("e")}
-            />
-            <TextInput
-              required
-              label='F'
-              placeholder='0'
-              {...form.getInputProps("f")}
-            />
-            <Group position='center' mt='md'>
-              <Button type='submit'>Submit</Button>
-            </Group>
-          </form>
-        </Box>
-      </Modal>
-      <Group position='center'>
-        <Button onClick={() => setOpened(true)}>Input Data</Button>
-      </Group>
-    </Stack>
+    </AppShell>
   );
 };
 
