@@ -6,6 +6,7 @@ import CustomAppShell from "../components/Layout";
 import CustomRadarChart from "../components/CustomRadarChart";
 import DataPointForm from "../components/DataPointForm";
 import DataPointFormValues from "../types/DataPointFormValues";
+import { ResponsiveFlexWrapper } from "../components/ResponsiveFlexWrapper";
 
 const Home: NextPage = () => {
   const [formValues, setFormValues] = useState<number[]>([]);
@@ -15,7 +16,7 @@ const Home: NextPage = () => {
 
   return (
     <CustomAppShell>
-      <Group grow>
+      <ResponsiveFlexWrapper>
         <Group grow position='center' my='100px'>
           <Box sx={{ maxWidth: 360 }} mx='auto'>
             <DataPointForm handleFormSubmit={handleFormSubmit} />
@@ -26,7 +27,7 @@ const Home: NextPage = () => {
             <CustomRadarChart data={formValues} />
           </Box>
         </Group>
-      </Group>
+      </ResponsiveFlexWrapper>
     </CustomAppShell>
   );
 };
